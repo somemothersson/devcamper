@@ -6,28 +6,43 @@ const todos = [
   { id: 3, text: "Todo three" }
 ];
 const server = http.createServer((req, res) => {
-  res.writeHead(404, {
-    "Content-Type": "application/json",
-    "X-Powered-By": "MY BUTTHOLE"
-  });
+  const { method, url } = req;
+  //   console.log(req.headers.authorization);
 
-//   console.log(req.headers.authorization);
-
-let body = []
-  req.on('data', chunk => {
-    body.push(chunk)
-  }).on('end', () => {
-      body = Buffer.concat(body).toString()
-      console.log(body)
-  })
-
-  res.end(
-    JSON.stringify({
-      success: true,
-      data: todos,
-    
+  let body = [];
+  req
+    .on("data", chunk => {
+      body.push(chunk);
     })
-  );
+    .on("end", () => {
+      body = Buffer.concat(body).toString();
+
+      let status = 404;
+
+      const response = {
+        success: true,
+        data: null
+      };
+
+      if (method === "GET" && url === "/todos") {
+        status = 200;
+        response.success = true;
+        response.data = todos;
+      } else if (method === "POST" && url === "/todos") {
+          
+        const { id, text } = JSON.parse(body);
+        todos.push({ id, text });
+        status = 201;
+        response.success = true;
+        response.data = todos;
+      }
+      res.writeHead(status, {
+        "Content-Type": "application/json",
+        "X-Powered-By": "MY BUTTHOLE"
+      });
+
+      res.end(JSON.stringify(response));
+    });
 });
 
 const PORT = 8080;
