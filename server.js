@@ -29,19 +29,23 @@ const server = http.createServer((req, res) => {
         response.success = true;
         response.data = todos;
       } else if (method === "POST" && url === "/todos") {
-          
         const { id, text } = JSON.parse(body);
-        todos.push({ id, text });
-        status = 201;
-        response.success = true;
-        response.data = todos;
-      }
-      res.writeHead(status, {
-        "Content-Type": "application/json",
-        "X-Powered-By": "MY BUTTHOLE"
-      });
 
-      res.end(JSON.stringify(response));
+        if (!id || !text) {
+          status = 400;
+        } else {
+          todos.push({ id, text });
+          status = 201;
+          response.success = true;
+          response.data = todos;
+        }
+        res.writeHead(status, {
+          "Content-Type": "application/json",
+          "X-Powered-By": "MY BUTTHOLE"
+        });
+
+        res.end(JSON.stringify(response));
+      }
     });
 });
 
