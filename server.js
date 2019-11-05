@@ -32,7 +32,8 @@ const server = http.createServer((req, res) => {
         const { id, text } = JSON.parse(body);
 
         if (!id || !text) {
-          status = 400;
+          status = 400
+          response.error = "Please enter id and text"
         } else {
           todos.push({ id, text });
           status = 201;
