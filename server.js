@@ -9,9 +9,11 @@ const bootcamps = require('./routes/bootcamps')
 
 const app = express();
 
+
+
+app.use(logger)
 // Mount Routers
 app.use('/api/v1/bootcamps', bootcamps)
-
 
 const PORT = process.env.PORT;
 
