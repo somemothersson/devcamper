@@ -1,22 +1,25 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const morgan = require("morgan");
 
+// Enable dotenv
 dotenv.config({ path: ".env" });
 
 // Route files
-const bootcamps = require('./routes/bootcamps')
-
+const bootcamps = require("./routes/bootcamps");
 
 const app = express();
 
-
-
-app.use(logger)
+// Dev Logging Middleware
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
 // Mount Routers
-app.use('/api/v1/bootcamps', bootcamps)
+app.use("/api/v1/bootcamps", bootcamps);
 
 const PORT = process.env.PORT;
 
+// Server listening
 app.listen(
   PORT,
   console.log(`Server running in ${process.env.NODE_ENV} on port ${PORT}`)
