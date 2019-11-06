@@ -1,10 +1,21 @@
-const express = require('express')
-const dotenv = require('dotenv')
+const express = require("express");
+const dotenv = require("dotenv");
 
-dotenv.config({ path: '.env'})
+dotenv.config({ path: ".env" });
 
-const app = express()
+// Route files
+const bootcamps = require('./routes/bootcamps')
 
-const PORT = process.env.PORT
 
-app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} on port ${PORT}`))
+const app = express();
+
+// Mount Routers
+app.use('/api/v1/bootcamps', bootcamps)
+
+
+const PORT = process.env.PORT;
+
+app.listen(
+  PORT,
+  console.log(`Server running in ${process.env.NODE_ENV} on port ${PORT}`)
+);
